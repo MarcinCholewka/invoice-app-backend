@@ -1,3 +1,3 @@
 export class UpdateInvoiceDto {
-  product: string;
+  name: string;
 }

@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
-import { InvoiceModule } from './invoice/invoice.module';
+import { ConfigModule } from '@nestjs/config';
+
+import { InvoiceModule } from '@invoice/invoice.module';
+import { PrismaModule } from '@prisma/prisma.module';
 
 @Module({
-  imports: [InvoiceModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    InvoiceModule,
+    PrismaModule,
+  ],
   controllers: [],
   providers: [],
 })

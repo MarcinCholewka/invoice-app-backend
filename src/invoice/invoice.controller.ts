@@ -1,16 +1,16 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
+  Body,
+  Delete,
   Param,
   Patch,
   Post,
 } from '@nestjs/common';
 
-import { InvoiceService } from './invoice.service';
-import { InvoiceDto } from './dto/invoice.dto';
-import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { InvoiceDto } from '@invoice/dto/invoice.dto';
+import { InvoiceService } from '@invoice/invoice.service';
+import { UpdateInvoiceDto } from '@invoice/dto/update-invoice.dto';
 
 @Controller('invoice')
 export class InvoiceController {

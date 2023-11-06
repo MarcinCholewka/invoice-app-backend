@@ -1,20 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 
-import { Invoice } from './entity/invoice';
-import { InvoiceDto } from './dto/invoice.dto';
-import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { InvoiceEntity } from '@invoice/entity/invoice';
+import { InvoiceDto } from '@invoice/dto/invoice.dto';
+import { UpdateInvoiceDto } from '@invoice/dto/update-invoice.dto';
+import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
 export class InvoiceService {
-  private _invoices: Invoice[] = [];
+  constructor(private prismaService: PrismaService) {}
 
-  async getInvoices(): Promise<Invoice[]> {
-    return this._invoices;
+  async getInvoices(): Promise<InvoiceEntity[]> {
+    return await this.prismaService.invoice.findMany();
   }
 
-  async getInvoice(id: string): Promise<Invoice> {
-    const invoice = this._invoices.find((invoice) => invoice.id === id);
+  async getInvoice(id: string): Promise<InvoiceEntity> {
+    const invoice = await this.prismaService.invoice.findUnique({
+      where: { id },
+    });
 
     if (!invoice) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
@@ -23,28 +25,39 @@ export class InvoiceService {
     return invoice;
   }
 
-  async createInvoice(invoice: InvoiceDto): Promise<void> {
-    const invoiceEntity = { ...invoice, id: uuidv4() };
+  async createInvoice(invoice: InvoiceDto): Promise<InvoiceEntity> {
+    const createdInvoice = await this.prismaService.invoice.create({
+      data: invoice,
+    });
 
-    this._invoices.push(invoiceEntity);
+    return createdInvoice;
   }
 
-  async updateInvoice(invoice: UpdateInvoiceDto, id: string): Promise<void> {
-    const invoiceIndex = this._invoices.findIndex(
-      (invoice) => invoice.id === id,
-    );
+  async updateInvoice(
+    invoice: UpdateInvoiceDto,
+    id: string,
+  ): Promise<InvoiceEntity> {
+    const existingInvoice = await this.getInvoice(id);
 
-    if (invoiceIndex < 0) {
+    if (!existingInvoice) {
       throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
     }
 
-    this._invoices[invoiceIndex] = {
-      ...this._invoices[invoiceIndex],
-      ...invoice,
-    };
+    const updatedInvoice = await this.prismaService.invoice.update({
+      where: { id },
+      data: invoice,
+    });
+
+    return updatedInvoice;
   }
 
   async deleteInvoice(id: string): Promise<void> {
-    this._invoices = this._invoices.filter((invoice) => invoice.id !== id);
+    const existingInvoice = await this.getInvoice(id);
+
+    if (!existingInvoice) {
+      throw new HttpException('NotFound', HttpStatus.NOT_FOUND);
+    }
+
+    await this.prismaService.invoice.delete({ where: { id } });
   }
 }

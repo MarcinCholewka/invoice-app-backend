@@ -1,18 +1,6 @@
-export class Invoice {
+import { Invoice as InvoiceModel } from '@prisma/client';
+
+export class InvoiceEntity implements InvoiceModel {
   id: string;
-  client: Client;
-  product: string;
-}
-
-export class Client {
   name: string;
-  address: Address;
-  vatNumber: string;
-}
-
-export class Address {
-  street: string;
-  city: string;
-  zipCode: string;
-  country: string;
 }

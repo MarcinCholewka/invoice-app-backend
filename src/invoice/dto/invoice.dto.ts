@@ -1,18 +1,5 @@
-export class InvoiceDto {
-  client: ClientDto;
-  product: string;
-}
+import { OmitType } from '@nestjs/mapped-types';
 
-export class ClientDto {
-  name: string;
-  address: AddressDto;
-  vatNumber: string;
-}
+import { InvoiceEntity } from '@invoice/entity/invoice';
 
-export class AddressDto {
-  street: string;
-  number: string;
-  city: string;
-  zipCode: string;
-  country: string;
-}
+export class InvoiceDto extends OmitType(InvoiceEntity, ['id']) {}
