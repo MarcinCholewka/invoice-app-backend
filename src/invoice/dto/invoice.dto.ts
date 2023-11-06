@@ -1,5 +1,6 @@
-import { OmitType } from '@nestjs/mapped-types';
+import { ApiProperty } from '@nestjs/swagger';
 
-import { InvoiceEntity } from '@invoice/entity/invoice';
-
-export class InvoiceDto extends OmitType(InvoiceEntity, ['id']) {}
+export class InvoiceDto {
+  @ApiProperty()
+  name: string;
+}
