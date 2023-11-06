@@ -10,13 +10,29 @@ async function main() {
 
   const invoice1 = await prisma.invoice.create({
     data: {
-      name: 'Invoice #1',
+      invoiceNumber: 'FV/01/12/2023',
+      items: [
+        {
+          name: 'Programming service with React',
+          price: 900,
+          quantity: 1,
+          rate: 23,
+        },
+      ],
     },
   });
 
   const invoice2 = await prisma.invoice.create({
     data: {
-      name: 'Invoice #2',
+      invoiceNumber: 'FV/02/12/2023',
+      items: [
+        {
+          name: 'Programming service with Nest',
+          price: 1000,
+          quantity: 1,
+          rate: 23,
+        },
+      ],
     },
   });
 

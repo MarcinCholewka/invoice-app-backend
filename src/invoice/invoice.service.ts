@@ -10,7 +10,7 @@ export class InvoiceService {
   constructor(private prismaService: PrismaService) {}
 
   async getInvoices(): Promise<InvoiceEntity[]> {
-    return await this.prismaService.invoice.findMany();
+    return this.prismaService.invoice.findMany();
   }
 
   async getInvoice(id: string): Promise<InvoiceEntity> {
