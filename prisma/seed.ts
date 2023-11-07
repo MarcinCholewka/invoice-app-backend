@@ -4,13 +4,41 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.invoice.deleteMany();
-
   console.info('Seeding...');
 
-  const invoice1 = await prisma.invoice.create({
-    data: {
-      invoiceNumber: 'FV/01/12/2023',
+  // create dummy users
+  const user1 = await prisma.user.upsert({
+    where: { email: 'mcholewka@icloud.com' },
+    update: {
+      password: 'password-marcin',
+    },
+    create: {
+      email: 'mcholewka@icloud.com',
+      name: 'Marcin Cholewka',
+      password: 'password-marcin',
+    },
+  });
+
+  const user2 = await prisma.user.upsert({
+    where: { email: 'sabin@adams.com' },
+    update: {
+      password: 'password-sabin',
+    },
+    create: {
+      email: 'sabin@adams.com',
+      name: 'Sabin Adams',
+      password: 'password-sabin',
+    },
+  });
+
+  // create dummy invoices
+  const invoice1 = await prisma.invoice.upsert({
+    where: { invoiceNumber: 'FV/01/11/2023' },
+    update: {
+      userId: user1.id,
+    },
+    create: {
+      invoiceNumber: 'FV/01/11/2023',
       items: [
         {
           name: 'Programming service with React',
@@ -22,13 +50,17 @@ async function main() {
     },
   });
 
-  const invoice2 = await prisma.invoice.create({
-    data: {
-      invoiceNumber: 'FV/02/12/2023',
+  const invoice2 = await prisma.invoice.upsert({
+    where: { invoiceNumber: 'FV/01/12/2023' },
+    update: {
+      userId: user2.id,
+    },
+    create: {
+      invoiceNumber: 'FV/01/12/2023',
       items: [
         {
-          name: 'Programming service with Nest',
-          price: 1000,
+          name: 'Programming service with React',
+          price: 1400,
           quantity: 1,
           rate: 23,
         },
@@ -36,7 +68,7 @@ async function main() {
     },
   });
 
-  console.log({ invoice1, invoice2 });
+  console.log({ user1, user2, invoice1, invoice2 });
 }
 
 // execute the main function

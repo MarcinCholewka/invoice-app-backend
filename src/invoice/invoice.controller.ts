@@ -1,23 +1,23 @@
 import {
-  Controller,
-  Get,
   Body,
+  Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiResponse,
   ApiOkResponse,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
-import { InvoiceDto } from '@invoice/dto/invoice.dto';
+import { CreateInvoiceDto } from '@/invoice/dto/create-invoice.dto';
+import { InvoiceEntity } from '@/invoice/entity/invoice.entity';
 import { InvoiceService } from '@invoice/invoice.service';
 import { UpdateInvoiceDto } from '@invoice/dto/update-invoice.dto';
-import { InvoiceEntity } from '@invoice/entity/invoice';
 
 @ApiTags('invoice')
 @Controller('invoice')
@@ -42,7 +42,9 @@ export class InvoiceController {
 
   @ApiCreatedResponse({ type: InvoiceEntity })
   @Post()
-  async createInvoice(@Body() invoiceDto: InvoiceDto): Promise<InvoiceEntity> {
+  async createInvoice(
+    @Body() invoiceDto: CreateInvoiceDto,
+  ): Promise<InvoiceEntity> {
     return await this.invoiceService.createInvoice(invoiceDto);
   }
 

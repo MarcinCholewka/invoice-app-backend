@@ -1,14 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { PartialType } from '@nestjs/swagger';
 
-import { Item as ItemModel } from '@prisma/client';
+import { CreateInvoiceDto } from '@invoice/dto/create-invoice.dto';
 
-export class UpdateInvoiceDto {
-  @ApiProperty()
-  invoiceNumber: string;
-
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  items: ItemModel[];
-}
+export class UpdateInvoiceDto extends PartialType(CreateInvoiceDto) {}
