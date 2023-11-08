@@ -14,9 +14,6 @@ export class UserEntity implements UserModel {
   createdAt: Date;
 
   @ApiProperty()
-  updatedAt: Date;
-
-  @ApiProperty()
   name: string;
 
   @ApiProperty()
