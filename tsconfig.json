@@ -20,7 +20,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@invoice/*": ["src/invoice/*"],
-      "@prisma/*": ["src/prisma/*"]
+      "@prisma/*": ["src/prisma/*"],
+      "@auth/*": ["src/auth/*"],
+      "@users/*": ["src/users/*"]
     }
   }
 }
