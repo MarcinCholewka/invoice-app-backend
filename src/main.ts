@@ -13,7 +13,6 @@ async function bootstrap() {
     .setTitle('Invoices App API')
     .setDescription('The invoices app API')
     .setVersion('1.0')
-    .addTag('invoices')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

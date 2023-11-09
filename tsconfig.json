@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@/*": ["src/*"],
-      "@invoice/*": ["src/invoice/*"],
+      "@invoice/*": ["src/invoices/*"],
       "@prisma/*": ["src/prisma/*"],
       "@auth/*": ["src/auth/*"],
       "@users/*": ["src/users/*"]

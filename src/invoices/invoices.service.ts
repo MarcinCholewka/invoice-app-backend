@@ -1,12 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { InvoiceEntity } from '@/invoice/entity/invoice.entity';
-import { CreateInvoiceDto } from '@/invoice/dto/create-invoice.dto';
-import { UpdateInvoiceDto } from '@invoice/dto/update-invoice.dto';
+import { InvoiceEntity } from '@/invoices/entity/invoice.entity';
+import { CreateInvoiceDto } from '@/invoices/dto/create-invoice.dto';
+import { UpdateInvoiceDto } from '@/invoices/dto/update-invoice.dto';
 import { PrismaService } from '@prisma/prisma.service';
 
 @Injectable()
-export class InvoiceService {
+export class InvoicesService {
   constructor(private prismaService: PrismaService) {}
 
   async getInvoices(): Promise<InvoiceEntity[]> {

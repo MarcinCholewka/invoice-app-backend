@@ -13,24 +13,26 @@ import {
   ApiOkResponse,
   ApiResponse,
   ApiTags,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
-import { CreateInvoiceDto } from '@/invoice/dto/create-invoice.dto';
-import { InvoiceEntity } from '@/invoice/entity/invoice.entity';
-import { InvoiceService } from '@invoice/invoice.service';
+import { CreateInvoiceDto } from '@/invoices/dto/create-invoice.dto';
+import { InvoiceEntity } from '@/invoices/entity/invoice.entity';
+import { InvoicesService } from '@/invoices/invoices.service';
 import { JwtAuthGuard } from '@auth/jwt-auth.guard';
-import { UpdateInvoiceDto } from '@invoice/dto/update-invoice.dto';
+import { UpdateInvoiceDto } from '@/invoices/dto/update-invoice.dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('invoice')
+@ApiBearerAuth()
 @Controller('invoice')
-export class InvoiceController {
-  constructor(private invoiceService: InvoiceService) {}
+export class InvoicesController {
+  constructor(private invoicesService: InvoicesService) {}
 
   @ApiOkResponse({ type: InvoiceEntity, isArray: true })
   @Get()
   async getInvoices(): Promise<InvoiceEntity[]> {
-    return await this.invoiceService.getInvoices();
+    return await this.invoicesService.getInvoices();
   }
 
   @ApiOkResponse({ type: InvoiceEntity })
@@ -40,7 +42,7 @@ export class InvoiceController {
   })
   @Get('/:id')
   async getInvoice(@Param('id') id: string): Promise<InvoiceEntity> {
-    return await this.invoiceService.getInvoice(id);
+    return await this.invoicesService.getInvoice(id);
   }
 
   @ApiCreatedResponse({ type: InvoiceEntity })
@@ -48,7 +50,7 @@ export class InvoiceController {
   async createInvoice(
     @Body() invoiceDto: CreateInvoiceDto,
   ): Promise<InvoiceEntity> {
-    return await this.invoiceService.createInvoice(invoiceDto);
+    return await this.invoicesService.createInvoice(invoiceDto);
   }
 
   @ApiOkResponse({ type: InvoiceEntity })
@@ -61,7 +63,7 @@ export class InvoiceController {
     @Body() invoiceDto: UpdateInvoiceDto,
     @Param('id') id: string,
   ) {
-    return await this.invoiceService.updateInvoice(invoiceDto, id);
+    return await this.invoicesService.updateInvoice(invoiceDto, id);
   }
 
   @ApiResponse({
@@ -70,6 +72,6 @@ export class InvoiceController {
   })
   @Delete('/:id')
   async deleteInvoice(@Param('id') id: string) {
-    return await this.invoiceService.deleteInvoice(id);
+    return await this.invoicesService.deleteInvoice(id);
   }
 }

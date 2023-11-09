@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-import { Item } from '@invoice/entity/invoice.entity';
+import { Item } from '@/invoices/entity/invoice.entity';
 
 export class CreateInvoiceDto {
   @IsNotEmpty()

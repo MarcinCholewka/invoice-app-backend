@@ -6,8 +6,9 @@ import {
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersService } from '@users/users.service';
+import { AuthEntity } from '@auth/entity/auth.entity';
 import { SignInDto } from '@auth/dto/sign-in.dto';
+import { UsersService } from '@users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -16,10 +17,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login({
-    email,
-    password,
-  }: SignInDto): Promise<{ access_token: string }> {
+  async login({ email, password }: SignInDto): Promise<AuthEntity> {
     const user = await this.usersService.findOne(email);
 
     // If no user is found, throw an error
@@ -38,7 +36,7 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email };
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }
