@@ -4,14 +4,22 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 import { UsersService } from '@users/users.service';
+import { SignInDto } from '@auth/dto/sign-in.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-  async login(email: string, password: string): Promise<any> {
+  async login({
+    email,
+    password,
+  }: SignInDto): Promise<{ access_token: string }> {
     const user = await this.usersService.findOne(email);
 
     // If no user is found, throw an error
@@ -27,9 +35,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid password');
     }
 
-    delete user.password;
-    delete user.email;
+    const payload = { sub: user.id, email: user.email };
 
-    return user;
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }

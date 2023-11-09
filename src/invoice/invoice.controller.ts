@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -17,8 +18,10 @@ import {
 import { CreateInvoiceDto } from '@/invoice/dto/create-invoice.dto';
 import { InvoiceEntity } from '@/invoice/entity/invoice.entity';
 import { InvoiceService } from '@invoice/invoice.service';
+import { JwtAuthGuard } from '@auth/jwt-auth.guard';
 import { UpdateInvoiceDto } from '@invoice/dto/update-invoice.dto';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('invoice')
 @Controller('invoice')
 export class InvoiceController {
